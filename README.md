@@ -12,6 +12,6 @@ Git as _Single Source of Truth_ for key metrics like [DORA](https://www.devops-r
 * Metrics are based on lightweight tags
 * [semver](https://semver.org) pattern must be honored
 * Consistent way of tagging must be used:
-  * CI/CD pileline to avoid manual tagging
-  * Tag commits when operations are performed ( i.e. deployments )
+  * CI/CD pipeline to avoid manual tagging
+  * Tag commits when operations are performed ( e.g. deployments )
   * Metrics must be useful, don't cheat yourself
