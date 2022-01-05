@@ -1,6 +1,9 @@
 # .coveragerc to control coverage.py
 [run]
 branch = True
+source = metrics
+relative_files = True
+source_pkgs = metrics
 
 [paths]
 source = tests
