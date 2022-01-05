@@ -29,6 +29,8 @@ jobs:
         python -m pip install tox tox-gh-actions poetry
     - name: Test with tox
       run: tox
+    - name: List reports
+      run: ls -la reports/
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master
       env:
