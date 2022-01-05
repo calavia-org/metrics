@@ -3,13 +3,8 @@
 
 from pydriller import Repository
 
-def iter_commits():
-    """Test function
-    """
-    for commit in Repository('https://github.com/calavia-org/online-ide').traverse_commits():
-        print(commit.hash)
-        print(commit.msg)
-        print(commit.author.name)
 
-        for file in commit.modified_files:
-            print(file.filename, ' has changed')
+def iter_commits(repository_url: str) -> None:
+    """Test function"""
+    for commit in Repository(repository_url).traverse_commits():
+        print(commit.hash)
