@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-"""entry point for metrics command jfvnpijrewvpijrnpijr3ngitgbwrthbwrthwrthwrthwrthrwtp3rjtngpi3jrtgnfi3tngp3iònpiniubn
+"""entry point for metrics command
 """
 from cleo import Application
 
