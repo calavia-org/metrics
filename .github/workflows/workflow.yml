@@ -1,0 +1,74 @@
+on:
+  # Trigger analysis when pushing in master or pull requests, and when creating
+  # a pull request.
+  push:
+    branches:
+      - main
+  pull_request:
+      types: [opened, synchronize, reopened]
+name: Main Workflow
+jobs:
+  static_analisys:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox poetry
+    - name: Lint with tox
+      run: |
+        echo "project_version=$(poetry version -s)" >> $GITHUB_ENV
+        tox -e lint
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        args: >
+          -Dsonar.projectVersion="${{ env.project_version }}"
+          -Dsonar.python.bandit.reportPaths=reports/bandit.json
+          -Dsonar.python.flake8.reportPaths=reports/flake8.txt
+          -Dsonar.python.pylint.reportPaths=reports/pylint.txt
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  test:
+    runs-on: ubuntu-latest
+    env:
+      TOX_SKIP_ENV: 'lint'
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        # Disabling shallow clone is recommended for improving relevancy of reporting
+        fetch-depth: 0
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install tox tox-gh-actions poetry
+    - name: Test with tox
+      run: |
+        echo "project_version=$(poetry version -s)" >> $GITHUB_ENV
+        tox
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        args: >
+          -Dsonar.projectVersion="${{ env.project_version }}"
+          -Dsonar.python.coverage.reportPaths=reports/coverage.xml
+          -Dsonar.python.xunit.reportPath=reports/xunit-*.xml
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
