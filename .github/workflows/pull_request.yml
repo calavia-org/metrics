@@ -1,8 +1,7 @@
+name: Pull Request workflow
 on:
   pull_request:
       types: [opened, synchronize, reopened]
-
-name: Pull Request workflow
 
 jobs:
   pull_request:
