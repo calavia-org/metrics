@@ -7,6 +7,9 @@ name: Pull Request workflow
 jobs:
   pull_request:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.8', '3.9']
     steps:
 
     - name: SCM
@@ -14,19 +17,20 @@ jobs:
       with:
         fetch-depth: 0
 
-    - name: Setup environment
+    - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
-        python-version:  [ '3.8', '3.9' ]
+        python-version:  ${{ matrix.python-version }}
 
     - name: Tox Execution
       run: |
         python -m pip install --upgrade pip
-        python -m pip install tox poetry
-        echo "project_version=$(poetry version -s)" >> $GITHUB_ENV
+        python -m pip install tox tox-gh-actions poetry
+        echo "project_version=$(poetry version -s).${{ matrix.python-version }}" >> $GITHUB_ENV
         tox
 
     - name: SonarCloud Scan
+      if: ${{ matrix.python-version == '3.8' }}
       uses: sonarsource/sonarcloud-github-action@master
       with:
         args: >
