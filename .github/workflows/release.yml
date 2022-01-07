@@ -1,0 +1,15 @@
+on:
+  push:
+    branches:
+      - main
+
+name: Release workflow
+
+jobs:
+  release:
+  runs-on: ubuntu-latest
+  steps:
+
+    - name: Generate release
+      run: |
+        echo "Release ...."
