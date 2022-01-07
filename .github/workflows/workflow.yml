@@ -67,7 +67,7 @@ jobs:
       with:
         args: >
           -Dsonar.projectVersion="${{ env.project_version }}"
-          -Dsonar.python.coverage.reportPaths=reports/coverage.xml
+          -Dsonar.python.coverage.reportPaths=reports/coverage-*.xml
           -Dsonar.python.xunit.reportPath=reports/xunit-*.xml
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

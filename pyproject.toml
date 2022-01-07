@@ -1,25 +1,18 @@
-[tool.poetry]
-name = "metrics"
-version = "0.1.0"
-description = "Metrics from various sources"
-authors = ["Jorge Calavia <1184336+jcalavia@users.noreply.github.com>"]
-license = "MIT"
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
 
-[tool.poetry.dependencies]
-cleo = "^0.8.1"
-python = "^3.8"
-PyDriller = "^2.0"
+[tool.coverage.run]
+branch = true
+relative_files = true
+source = ["metrics"]
+source_pkgs = ["metrics"]
 
-[tool.poetry.dev-dependencies]
-bandit = "^1.7.1"
-black = "^21.12b0"
-flake8 = "^4.0.1"
-isort = "^5.10.1"
-pylint = "^2.12.2"
-pytest-cov = "^3.0.0"
-pytest = "^6.2.5"
-pytest-mock = "^3.6.1"
-tox = "^3.24.5"
+[tool.coverage.paths]
+source = ["tests"]
+
+[tool.coverage.report]
+show_missing = true
 
 [tool.isort]
 profile = "black"
@@ -33,9 +26,42 @@ src_paths = ["metrics", "tests"]
 filter_files = true
 known_first_party = "metrics"
 
+[tool.poetry]
+name = "metrics"
+version = "0.1.0"
+description = "Metrics from various sources"
+authors = ["Jorge Calavia <1184336+jcalavia@users.noreply.github.com>"]
+license = "MIT"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^2.16.0"
+pylint = "^2.12.2"
+pytest-cov = "^3.0.0"
+pytest = "^6.2.5"
+pytest-mock = "^3.6.1"
+tox = "^3.24.5"
+
+[tool.poetry.dependencies]
+cleo = "^0.8.1"
+python = "^3.8"
+PyDriller = "^2.0"
+
 [tool.poetry.scripts]
 metrics = "metrics.cli:application.run"
 
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[tool.pylint.'REPORTS']
+evaluation = ['10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)']
+msg-template="{path}:{line}: [{msg_id}({symbol}), {obj}] {msg}"
+output-format = ['text']
+reports = ['no']
+score = ['no']
+
+[tool.pytest.ini_options]
+minversion = "3.0"
+addopts = "-rfEX --showlocals --cov=metrics --cov-report=term-missing"
+python_files = ["test_*.py", "*_test.py"]
+python_classes = ["Test", "Acceptance"]
+python_functions = ["test"]
+# NOTE: "doc" is not included here, but gets tested explicitly via "doctesting".
+testpaths = ["tests"]
+norecursedirs = ["tests/example_scripts"]
