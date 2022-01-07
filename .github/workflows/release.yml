@@ -10,12 +10,26 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
+    - name: SCM
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+
     - name: Bump minor version
-      if: startsWith('feature/', ${{ github.head_ref }})
+      if: startsWith(github.head_ref, 'feature/')
       run: |
-        echo feature merged in PR #${{ github.event.number }}
+        python -m pip install --upgrade pip
+        python -m pip install poetry
+        poetry version minor
 
     - name: Bump patch version
-      if: startsWith('fix/', ${{ github.head_ref }})
+      if: startsWith(github.head_ref, 'fix/')
       run: |
-        echo fix merged in PR #${{ github.event.number }}
+        python -m pip install --upgrade pip
+        python -m pip install poetry
+        poetry version patch
