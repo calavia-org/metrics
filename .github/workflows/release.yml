@@ -1,15 +1,21 @@
+name: Close Pull Request
 on:
-  push:
-    branches:
-      - main
-
-name: Release workflow
+  pull_request:
+    types: [ closed ]
 
 jobs:
-  release:
-  runs-on: ubuntu-latest
-  steps:
+  relese:
+    # this job will only run if the PR has been merged to main branch
+    if: ${{ (github.event.pull_request.merged == true) && (github.base_ref == 'main') }}
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo PR #${{ github.event.number }} has been merged
 
-    - name: Generate release
-      run: |
-        echo "Release ...."
+  close_job:
+    # this job will only run if the PR has been closed without being merged
+    if: github.event.pull_request.merged == false
+    runs-on: ubuntu-latest
+    steps:
+    - run: |
+        echo PR #${{ github.event.number }} has been closed without being merged
