@@ -3,7 +3,6 @@
 [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/calavia-org/metrics/main.svg)](https://results.pre-commit.ci/latest/github/calavia-org/metrics/main)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=calavia-org_metrics&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=calavia-org_metrics)
 
-
 Library designed to extract metrics from various sources
 
 ## Git source
