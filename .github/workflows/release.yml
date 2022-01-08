@@ -43,4 +43,4 @@ jobs:
         default_author: github_actions
         branch: 'main'
         add: '.'
-        tag: '${{ env.version_type }}'
+        tag: '${{ env.project_version }}'
