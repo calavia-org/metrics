@@ -31,6 +31,7 @@ jobs:
         echo "version_type='patch'" >> $GITHUB_ENV
 
     - name: Bump version type ${{ env.version_type }}
+      run: |
         python -m pip install --upgrade pip
         python -m pip install poetry
         poetry version ${{ env.version_type }}
