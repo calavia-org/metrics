@@ -20,16 +20,25 @@ jobs:
       with:
         python-version: '3.8'
 
-    - name: Bump minor version
+    - name: Feature
       if: startsWith(github.head_ref, 'feature/')
       run: |
-        python -m pip install --upgrade pip
-        python -m pip install poetry
-        poetry version minor
+        echo "version_type='minor'" >> $GITHUB_ENV
 
-    - name: Bump patch version
+    - name: Bug
       if: startsWith(github.head_ref, 'fix/')
       run: |
+        echo "version_type='patch'" >> $GITHUB_ENV
+
+    - name: Bump version type ${{ env.version_type }}
         python -m pip install --upgrade pip
         python -m pip install poetry
-        poetry version patch
+        poetry version ${{ env.version_type }}
+        echo "project_version=$(poetry version -s)" >> $GITHUB_ENV
+
+    - uses: EndBug/add-and-commit@v7
+      with:
+        message: Bump version to ${{ env.project_version }}
+        default_author: github_actions
+        add: '.'
+        tag: '${{ env.version_type }}'
