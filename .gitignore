@@ -2,3 +2,4 @@
 
 reports/*
 .tox/
+.venv/
