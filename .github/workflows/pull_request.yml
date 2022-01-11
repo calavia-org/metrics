@@ -16,11 +16,6 @@ jobs:
       uses: actions/checkout@v2
       with:
         fetch-depth: 0
-ref="${github_ref////-}"
-
-        echo $ref
-
-        echo "::set-env name=ref::$ref"
 
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
