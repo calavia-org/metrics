@@ -38,11 +38,3 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
-    - name: Upload static reports
-      if: ${{ matrix.python-version == '3.8' }}
-      uses: actions/upload-artifact@v2
-      with:
-        name: metrics-reports-${{ github.event.number }}
-        path: reports
-        retention-days: 2

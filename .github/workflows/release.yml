@@ -36,6 +36,17 @@ jobs:
         python -m pip install poetry
         poetry version ${{ env.version_type }}
         echo "project_version=$(poetry version -s)" >> $GITHUB_ENV
+        tox
+
+    - name: SonarCloud Scan
+      if: ${{ matrix.python-version == '3.8' }}
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        args: >
+          -Dsonar.projectVersion="${{ env.project_version }}"
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - uses: EndBug/add-and-commit@v7
       with:
@@ -44,17 +55,3 @@ jobs:
         branch: 'main'
         add: 'pyproject.toml'
         tag: '${{ env.project_version }}'
-
-    - uses: actions/download-artifact@v2
-      with:
-        name: metrics-reports-${{ github.event.number }}
-        path: reports
-
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      with:
-        args: >
-          -Dsonar.projectVersion="${{ env.project_version }}"
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
