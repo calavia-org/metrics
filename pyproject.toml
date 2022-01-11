@@ -28,7 +28,7 @@ known_first_party = "metrics"
 
 [tool.poetry]
 name = "metrics"
-version = "0.3.4"
+version = "0.3.5"
 description = "Metrics from various sources"
 authors = ["Jorge Calavia <1184336+jcalavia@users.noreply.github.com>"]
 license = "MIT"
